@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const readSlice = createSlice({
-  name: 'read',
+export const crudSlice = createSlice({
+  name: 'crud',
   initialState: {
     value: 0
   },
@@ -22,7 +22,7 @@ export const readSlice = createSlice({
   }
 })
 
-export const { increment, decrement, incrementByAmount } = readSlice.actions
+export const { increment, decrement, incrementByAmount } = crudSlice.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -39,4 +39,4 @@ export const incrementAsync = amount => dispatch => {
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
 export const selectCount = state => state.counter.value;
 
-export default readSlice.reducer
+export default crudSlice.reducer
