@@ -1,6 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Card as Cartao, Col, Button } from 'antd';
+import { Card as Cartao, Col, Button, Menu, Dropdown, message } from 'antd';
 import './Card.css'
 import {SettingFilled} from '@ant-design/icons';
 
@@ -23,6 +23,21 @@ function Propimg(props){
 // ? description
 // ? author: author of the ticket
 function Card(props) {
+    const menuCall = (e) => {
+        if(e.key === 'edit'){
+            message.info('janela de editar')
+        }else{
+            message.info('janela de deletar')
+        }
+    }
+
+    const menu = (
+        <Menu onClick={menuCall}>
+          <Menu.Item key="edit">Editar</Menu.Item>
+          <Menu.Item key="delete">Excluir</Menu.Item>
+        </Menu>
+      )
+
     let propimg = Propimg(props)
     return (
         // TODO add hook to @onPress
@@ -43,7 +58,10 @@ function Card(props) {
                 <div style={{float: 'left', color: '#1F1F49'}}>{props.author}</div>    
             </Col>
             
-            <Button type="text" icon={<SettingFilled />} style={{alignSelf: 'flex-end', margin: '0 0 0 auto', color: '#8D89A5'}} size='large' />
+            {/* <Button type="text" icon={<SettingFilled />} style={{alignSelf: 'flex-end', margin: '0 0 0 auto', color: '#8D89A5'}} size='large' /> */}
+            <Dropdown overlay={menu} style={{alignSelf: 'flex-end', margin: '0 0 0 auto', color: '#8D89A5'}} trigger={['click']}>
+                <SettingFilled style={{alignSelf: 'flex-end', margin: '0 0 0 auto', color: '#8D89A5', padding: '0 0 5px 0'}}/>
+            </Dropdown>
 
         </Cartao>
     );
