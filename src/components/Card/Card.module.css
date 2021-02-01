@@ -3,7 +3,7 @@
     width: '259px';
     min-height: '146px';
     padding: 14px 21px 24px 16px;
-    margin: 0 8px;
+    margin: 0 8px 8px 8px;
     border-radius: 4px;
     border: 1px solid #E5E5E5;
 }
@@ -21,4 +21,17 @@
     flex-direction: row;
     align-items: flex-start;
     padding: 0px 10px;
+}
+
+.cardNumber {
+    flex-direction: row;
+    align-items: flex-start;
+    display: flex;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0.10000000149011612px;
+    text-align: left;
 }

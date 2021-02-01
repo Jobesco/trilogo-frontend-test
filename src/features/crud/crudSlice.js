@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 export const crudSlice = createSlice({
   name: 'crud',
   initialState: [
-    {desc: 'test1', resp: 'resp1', tipo: 'Bem', id: 0},
-    {desc: 'test2', resp: 'resp2', tipo: 'Predial', id: 1}
+    {desc: 'test1', resp: 'resp1', tipo: 'Bem', id: 0, num: 6523},
+    {desc: 'test2', resp: 'resp2', tipo: 'Predial', id: 0, num: 6523}
   ],
   reducers: {
     // TODO async functions
@@ -30,11 +30,11 @@ export const { create, update, deleteCRUD } = crudSlice.actions
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched
-export const incrementAsync = amount => dispatch => {
-  setTimeout(() => {
-    dispatch(incrementByAmount(amount));
-  }, 1000);
-};
+// export const incrementAsync = amount => dispatch => {
+//   setTimeout(() => {
+//     dispatch(incrementByAmount(amount));
+//   }, 1000);
+// };
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

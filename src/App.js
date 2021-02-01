@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
-import { Layout, Button, Row, Col, Typography, Divider, Modal } from 'antd';
+import { Layout, Button, Row, Col, Typography, Divider, Modal, Form } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Card from './components/Card/Card.js'
 import TicketForm from './components/NewTicketForm/TicketForm.js'
@@ -16,6 +16,9 @@ function App() {
   const [visibleModal, setVisibleModal] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const db = useSelector(getCRUD)
+  let realDb = db.map((item) => {
+    return <Card type={item.tipo} number={item.num} description={item.desc} author={item.resp}></Card>
+  })
 
   const showModal = () => {
     setVisibleModal(true)
@@ -34,18 +37,6 @@ function App() {
     setVisibleModal(false);
   };
 
-  const giveID = (db) => {
-    let id = db.length()
-
-    // ? runs array checking if it's unique
-    // ! can be optimized with a server that hashes automatically
-    while(db.some((item, index) => index === id)) {
-      id += 1
-    }
-
-    return id
-  }
-
   return (
     <Layout className="layout" style={{background: '#E5E5E5'}}>
       <Header style={{backgroundColor: '#FFFFFF', height: '80px', padding: '0 60px'}}>
@@ -54,18 +45,18 @@ function App() {
           <Button style={{background: '#4C12A1'}} type="default" shape="round" size={'large'} icon={<PlusOutlined style={{color: 'white'}} />} onClick={showModal} >
             <div style={{color: 'white', display: 'inline'}}> Novo Ticket</div>
           </Button>
-
+          {/* // TODO close modal on success */}
           <Modal
             title="Novo ticket"
             visible={visibleModal}
             onOk={handleOk}
             confirmLoading={confirmLoading}
             onCancel={handleCancel}
-            bodyStyle={{padding: '0 16px 16px 16px', borderRadius: '4px', height:'448px'}}
+            bodyStyle={{padding: '0 16px 16px 16px', borderRadius: '4px', height:'528px'}}
             className={styles.modal}
             footer={null}
           >
-            <TicketForm style={{height: '472px'}}/>
+            <TicketForm style={{height: '528px'}}/>
           </Modal>
         </Row>
         
@@ -85,7 +76,7 @@ function App() {
 
                 {/* // TODO change to a lazy list */}
                 <Col align="middle" style={{padding: '10px 0 0 0'}}>
-                  <Card type="Procedimento" number="6523" description="Consertar o vazamento" author="Yudi Tamashiro"></Card>
+                  {realDb}
                 </Col>
                 
               </div>

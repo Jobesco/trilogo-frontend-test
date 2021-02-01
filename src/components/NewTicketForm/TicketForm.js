@@ -1,8 +1,9 @@
-import { Form, Input, Button, Select, Upload } from 'antd';
+import { Form, Input, Button, Select, Upload, notification } from 'antd';
 import styles from './TicketForm.module.css'
 import './TicketForm.css'
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
-
+import { useSelector, useDispatch } from 'react-redux'
+import { getCRUD, create } from '../../features/crud/crudSlice';
 
 const layout = {
   labelCol: {
@@ -22,12 +23,27 @@ const tailLayout = {
 const { Option } = Select;
 
 function TicketForm(props) {
+    const db = useSelector(getCRUD)
+    const dispatch = useDispatch()
+
+    const openNotificationWithIcon = type => {
+        notification[type]({
+          message: type == 'success' ? 'Sucesso!' : 'Erro!',
+          description:
+            type == 'success' ? 'Ocorrência enviada com sucesso!' : 'Por favor, tente novamente mais tarde. :(',
+        });
+      };
+
     const onFinish = (values) => {
-        console.log('Success:', values);
+        values.id = giveID(db)
+        values.num = 6523
+        dispatch(create(values))
+        console.log(values)
+        openNotificationWithIcon('success')
     };
     
-    const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    const onFinishFailed = () => {
+        openNotificationWithIcon('error')
     };
 
     const normFile = (e) => {
@@ -36,7 +52,19 @@ function TicketForm(props) {
             return e;
         }
         return e && e.fileList;
-        };
+    };
+
+    const giveID = (db) => {
+        let id = db.length
+
+        // ? runs array checking if it's unique
+        // ! can be optimized with a server that hashes automatically
+        while(db.some((item, index) => index === id)) {
+            id += 1
+        }
+
+        return id
+    }
 
     return (
         <Form
@@ -47,7 +75,7 @@ function TicketForm(props) {
         >
             <Form.Item
             label="Descrição"
-            name="descricao"
+            name="desc"
             rules={[
                 {
                 required: true,
@@ -71,15 +99,15 @@ function TicketForm(props) {
             className={styles.formItem}
             >
                 <Select placeholder="Escolha" allowClear>
-                    <Option value="bem">Bem</Option>
-                    <Option value="predial">Predial</Option>
-                    <Option value="procedimento">Procedimento</Option>
+                    <Option value="Bem">Bem</Option>
+                    <Option value="Predial">Predial</Option>
+                    <Option value="Procedimento">Procedimento</Option>
                 </Select>
             </Form.Item>
 
             <Form.Item
             label="Responsável"
-            name="responsavel"
+            name="resp"
             rules={[
                 {
                 required: true,
@@ -109,7 +137,7 @@ function TicketForm(props) {
             </Form.Item>
 
             {/* // TODO align button at end */}
-            <Button style={{background: '#4C12A1', justifySelf: 'end', alignSelf: 'end'}} type="default" shape="round" size={'small'} >
+            <Button style={{background: '#4C12A1', justifySelf: 'end', alignSelf: 'end'}} type="default" shape="round" size={'small'} htmlType="submit">
                 <div style={{color: 'white', display: 'inline'}}>Criar Ticket</div>
             </Button>
         </Form>

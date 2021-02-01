@@ -1,8 +1,8 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Card as Cartao, Col, Button, Menu, Dropdown, message } from 'antd';
-import './Card.css'
 import {SettingFilled} from '@ant-design/icons';
+import styles from './Card.module.css'
 
 function Propimg(props){
     // TODO set image
@@ -41,18 +41,18 @@ function Card(props) {
     let propimg = Propimg(props)
     return (
         // TODO add hook to @onPress
-        <Cartao className="cardBody" bodyStyle={{padding: '0', display: 'flex'}}>
-            {/* // TODO colourized pill */}
+        <Cartao className={styles.cardBody} bodyStyle={{padding: '0', display: 'flex'}}>
+            {/* // TODO fix font. why it isnt roboto like the figma is? */}
             <Col style={{float: 'left', padding: '0'}}>
                 {propimg}
 
                 <div style={{display: 'flex', marginBottom: '12px'}}>
-                    <div className="cardType">{props.type}</div>
+                    <div className={styles.cardType}>{props.type}</div>
                 </div>
 
-                <div style={{flexDirection: 'row', alignItems: 'flex-start', display: 'flex'}}>{props.number}</div>
+                <div className={styles.cardNumber}>{props.number}</div>
 
-                <div style={{color: '#666666', minHeight: '44px',}}>{props.description}</div>
+                <div style={{color: '#666666', minHeight: '44px', textAlign: 'left'}}>{props.description}</div>
 
                 {/* // TODO same line for text and button */}
                 <div style={{float: 'left', color: '#1F1F49'}}>{props.author}</div>    
