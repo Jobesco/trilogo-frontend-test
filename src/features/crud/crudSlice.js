@@ -1,19 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, nanoid } from '@reduxjs/toolkit'
 
 export const crudSlice = createSlice({
   name: 'crud',
-  initialState: [
-    {desc: 'test1', resp: 'resp1', tipo: 'Bem', id: 0, num: 6523},
-    {desc: 'test2', resp: 'resp2', tipo: 'Predial', id: 0, num: 6523}
-  ],
+  initialState: [],
   reducers: {
     // TODO async functions
     create: (state, action) => {
+      action.payload.id = nanoid()
       state.push(action.payload)
     },
     update: (state,action) => {
-      state = state.map((item) => {
+      console.log(state,'state')
+      return state.map((item) => {
         if(item.id == action.payload.id){ // * change in this one
+          console.log(action.payload,'payload')
+          console.log(item,'item')
           return action.payload
         }else return item
       })

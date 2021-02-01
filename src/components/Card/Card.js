@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { Card as Cartao, Col, Button, Menu, Dropdown, message } from 'antd';
+import { Card as Cartao, Col, Button, Menu, Dropdown, message, Modal } from 'antd';
 import {SettingFilled} from '@ant-design/icons';
 import styles from './Card.module.css'
+import UpdateTicketForm from '../UpdateTicketForm/UpdateTicketForm'
 
 function Propimg(props){
     // TODO set image
@@ -23,20 +24,28 @@ function Propimg(props){
 // ? description
 // ? author: author of the ticket
 function Card(props) {
+    const [visibleModal, setVisibleModal] = React.useState(false);
+    const [confirmLoading, setConfirmLoading] = React.useState(false);
+
     const menuCall = (e) => {
         if(e.key === 'edit'){
-            message.info('janela de editar')
+            setVisibleModal(true)
         }else{
             message.info('janela de deletar')
         }
     }
+
+    const handleCancel = () => {
+        console.log('Clicked cancel button');
+        setVisibleModal(false);
+    };
 
     const menu = (
         <Menu onClick={menuCall}>
           <Menu.Item key="edit">Editar</Menu.Item>
           <Menu.Item key="delete">Excluir</Menu.Item>
         </Menu>
-      )
+    );
 
     let propimg = Propimg(props)
     return (
@@ -63,6 +72,17 @@ function Card(props) {
                 <SettingFilled style={{alignSelf: 'flex-end', margin: '0 0 0 auto', color: '#8D89A5', padding: '0 0 5px 0'}}/>
             </Dropdown>
 
+            <Modal
+                title="Atualizar ticket"
+                visible={visibleModal}
+                confirmLoading={confirmLoading}
+                onCancel={handleCancel}
+                bodyStyle={{padding: '0 16px 16px 16px', borderRadius: '4px', height:'528px'}}
+                className={styles.modal}
+                footer={null}
+            >
+                <UpdateTicketForm style={{height: '528px'}} desc={props.description} tipo={props.type} resp={props.author} imagem={propimg} id={props.id} num={props.num} />
+            </Modal>
         </Cartao>
     );
 }

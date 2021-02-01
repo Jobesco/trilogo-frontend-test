@@ -1,24 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
-import { Layout, Button, Row, Col, Typography, Divider, Modal, Form } from 'antd';
+import { Layout, Button, Row, Col, Typography, Divider, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Card from './components/Card/Card.js'
 import TicketForm from './components/NewTicketForm/TicketForm.js'
 import styles from './components/NewTicketForm/TicketForm.module.css'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { getCRUD, create, update, deleteCRUD } from './features/crud/crudSlice';
+import store from './app/store';
 
 const { Header, Content } = Layout;
 const { Text } = Typography;
 
 function App() {
-  const [visibleModal, setVisibleModal] = React.useState(false);
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [realDB, setRealDB] = useState([]);
   const db = useSelector(getCRUD)
-  let realDb = db.map((item) => {
-    return <Card type={item.tipo} number={item.num} description={item.desc} author={item.resp}></Card>
-  })
+
+  useEffect(() => {
+    console.log(db,'db change')
+    setRealDB(db.map((item) => {
+      return <Card type={item.tipo} number={item.num} description={item.desc} author={item.resp} id={item.id} num={item.num}></Card>
+    }))
+    // store.subscribe(() => {
+    //   // if(realDB.length != store.getState().crud.length)
+    //   console.log(db,'db changed?')
+    // })
+  }, [db])
 
   const showModal = () => {
     setVisibleModal(true)
@@ -76,7 +86,7 @@ function App() {
 
                 {/* // TODO change to a lazy list */}
                 <Col align="middle" style={{padding: '10px 0 0 0'}}>
-                  {realDb}
+                  {realDB}
                 </Col>
                 
               </div>

@@ -25,6 +25,7 @@ const { Option } = Select;
 function TicketForm(props) {
     const db = useSelector(getCRUD)
     const dispatch = useDispatch()
+    const [form] = Form.useForm()
 
     const openNotificationWithIcon = type => {
         notification[type]({
@@ -35,10 +36,10 @@ function TicketForm(props) {
       };
 
     const onFinish = (values) => {
-        values.id = giveID(db)
+        // values.id = giveID(db)
         values.num = 6523
         dispatch(create(values))
-        console.log(values)
+        form.resetFields();
         openNotificationWithIcon('success')
     };
     
@@ -72,6 +73,7 @@ function TicketForm(props) {
             name="basic"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
+            form={form}
         >
             <Form.Item
             label="Descrição"
@@ -117,9 +119,9 @@ function TicketForm(props) {
             className={styles.formItem}
             >
                 <Select placeholder="Escolha" allowClear>
-                    <Option value="fulano">Fulano</Option>
-                    <Option value="sicrano">Sicrano</Option>
-                    <Option value="beltrano">Beltrano</Option>
+                    <Option value="Fulano">Fulano</Option>
+                    <Option value="Sicrano">Sicrano</Option>
+                    <Option value="Beltrano">Beltrano</Option>
                 </Select>
             </Form.Item>
 
