@@ -2,27 +2,29 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export const crudSlice = createSlice({
   name: 'crud',
-  initialState: {
-    value: 0
-  },
+  initialState: [
+    {desc: 'test1', resp: 'resp1', tipo: 'Bem', id: 0},
+    {desc: 'test2', resp: 'resp2', tipo: 'Predial', id: 1}
+  ],
   reducers: {
-    increment: state => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1
+    // TODO async functions
+    create: (state, action) => {
+      state.push(action.payload)
     },
-    decrement: state => {
-      state.value -= 1
+    update: (state,action) => {
+      state = state.map((item) => {
+        if(item.id == action.payload.id){ // * change in this one
+          return action.payload
+        }else return item
+      })
     },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload
-    }
+    deleteCRUD: (state,action) => {
+      state = state.filter((item) => item.id != action.payload.id)
+    },
   }
 })
 
-export const { increment, decrement, incrementByAmount } = crudSlice.actions
+export const { create, update, deleteCRUD } = crudSlice.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -37,6 +39,6 @@ export const incrementAsync = amount => dispatch => {
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
-export const selectCount = state => state.counter.value;
+export const getCRUD = state => state.crud;
 
 export default crudSlice.reducer

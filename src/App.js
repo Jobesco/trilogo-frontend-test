@@ -6,6 +6,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import Card from './components/Card/Card.js'
 import TicketForm from './components/NewTicketForm/TicketForm.js'
 import styles from './components/NewTicketForm/TicketForm.module.css'
+import { useSelector } from 'react-redux'
+import { getCRUD, create, update, deleteCRUD } from './features/crud/crudSlice';
 
 const { Header, Content } = Layout;
 const { Text } = Typography;
@@ -13,6 +15,7 @@ const { Text } = Typography;
 function App() {
   const [visibleModal, setVisibleModal] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const db = useSelector(getCRUD)
 
   const showModal = () => {
     setVisibleModal(true)
@@ -30,6 +33,18 @@ function App() {
     console.log('Clicked cancel button');
     setVisibleModal(false);
   };
+
+  const giveID = (db) => {
+    let id = db.length()
+
+    // ? runs array checking if it's unique
+    // ! can be optimized with a server that hashes automatically
+    while(db.some((item, index) => index === id)) {
+      id += 1
+    }
+
+    return id
+  }
 
   return (
     <Layout className="layout" style={{background: '#E5E5E5'}}>
