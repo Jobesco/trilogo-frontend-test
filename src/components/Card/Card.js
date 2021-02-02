@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Card as Cartao, Col, Button, Menu, Dropdown, message, Modal } from 'antd';
 import {SettingFilled} from '@ant-design/icons';
 import styles from './Card.module.css'
 import UpdateTicketForm from '../UpdateTicketForm/UpdateTicketForm'
+import { getModalState } from '../../features/generalSlice'
+import { useSelector } from 'react-redux'
 
 function Propimg(props){
     // TODO set image
@@ -24,8 +26,10 @@ function Propimg(props){
 // ? description
 // ? author: author of the ticket
 function Card(props) {
-    const [visibleModal, setVisibleModal] = React.useState(false);
-    const [confirmLoading, setConfirmLoading] = React.useState(false);
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const modalState = useSelector(getModalState)
+
 
     const menuCall = (e) => {
         if(e.key === 'edit'){
@@ -36,9 +40,14 @@ function Card(props) {
     }
 
     const handleCancel = () => {
-        console.log('Clicked cancel button');
+        // console.log('Clicked cancel button');
         setVisibleModal(false);
     };
+
+    useEffect(() => {
+        console.log('modal state changed on Card')
+        setVisibleModal(false);
+    }, [modalState])
 
     const menu = (
         <Menu onClick={menuCall}>

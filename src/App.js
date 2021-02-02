@@ -7,8 +7,9 @@ import Card from './components/Card/Card.js'
 import TicketForm from './components/NewTicketForm/TicketForm.js'
 import styles from './components/NewTicketForm/TicketForm.module.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { getCRUD, create, update, deleteCRUD } from './features/crud/crudSlice';
-import store from './app/store';
+import { getCRUD } from './features/crud/crudSlice';
+// import store from './app/store';
+import { getModalState } from './features/generalSlice'
 
 const { Header, Content } = Layout;
 const { Text } = Typography;
@@ -18,6 +19,7 @@ function App() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [realDB, setRealDB] = useState([]);
   const db = useSelector(getCRUD)
+  const modalState = useSelector(getModalState)
 
   useEffect(() => {
     console.log(db,'db change')
@@ -29,6 +31,11 @@ function App() {
     //   console.log(db,'db changed?')
     // })
   }, [db])
+
+  useEffect(() => {
+    console.log('modal state changed on App')
+    setVisibleModal(false);
+  }, [modalState])
 
   const showModal = () => {
     setVisibleModal(true)
@@ -43,7 +50,7 @@ function App() {
   };
 
   const handleCancel = () => {
-    console.log('Clicked cancel button');
+    // console.log('Clicked cancel button');
     setVisibleModal(false);
   };
 
@@ -55,7 +62,7 @@ function App() {
           <Button style={{background: '#4C12A1'}} type="default" shape="round" size={'large'} icon={<PlusOutlined style={{color: 'white'}} />} onClick={showModal} >
             <div style={{color: 'white', display: 'inline'}}> Novo Ticket</div>
           </Button>
-          {/* // TODO close modal on success */}
+          
           <Modal
             title="Novo ticket"
             visible={visibleModal}

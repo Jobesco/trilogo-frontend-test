@@ -3,7 +3,8 @@ import styles from './TicketForm.module.css'
 import './TicketForm.css'
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux'
-import { getCRUD, create } from '../../features/crud/crudSlice';
+import { create } from '../../features/crud/crudSlice';
+import { change } from '../../features/generalSlice';
 
 const layout = {
   labelCol: {
@@ -23,7 +24,6 @@ const tailLayout = {
 const { Option } = Select;
 
 function TicketForm(props) {
-    const db = useSelector(getCRUD)
     const dispatch = useDispatch()
     const [form] = Form.useForm()
 
@@ -39,8 +39,10 @@ function TicketForm(props) {
         // values.id = giveID(db)
         values.num = 6523
         dispatch(create(values))
+        dispatch(change())
         form.resetFields();
         openNotificationWithIcon('success')
+        console.log('created!')
     };
     
     const onFinishFailed = () => {

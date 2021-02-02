@@ -3,6 +3,7 @@ import styles from './UpdateTicketForm.module.css'
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux'
 import { update } from '../../features/crud/crudSlice';
+import { change } from '../../features/generalSlice';
 
 const layout = {
   labelCol: {
@@ -39,6 +40,7 @@ function UpdateTicketForm(props) {
       // console.log(values, 'valores atualizando')
       console.log('terminei')
       openNotificationWithIcon('success')
+      dispatch(change())
     };
     
     const onFinishFailed = () => {
