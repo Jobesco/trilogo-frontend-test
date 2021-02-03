@@ -5,7 +5,8 @@ import {SettingFilled} from '@ant-design/icons';
 import styles from './Card.module.css'
 import UpdateTicketForm from '../UpdateTicketForm/UpdateTicketForm'
 import { getModalState } from '../../features/generalSlice'
-import { useSelector } from 'react-redux'
+import { deleteCRUD } from '../../features/crud/crudSlice'
+import { useSelector, useDispatch } from 'react-redux'
 
 function Propimg(props){
     // TODO set image
@@ -29,13 +30,16 @@ function Card(props) {
     const [visibleModal, setVisibleModal] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const modalState = useSelector(getModalState)
+    const dispatch = useDispatch()
 
 
     const menuCall = (e) => {
         if(e.key === 'edit'){
             setVisibleModal(true)
         }else{
-            message.info('janela de deletar')
+            console.log(props,'props!!')
+            dispatch(deleteCRUD(props))
+            message.info('Deletado com sucesso!')
         }
     }
 
@@ -59,6 +63,8 @@ function Card(props) {
     let propimg = Propimg(props)
     return (
         // TODO add hook to @onPress
+        // TODO show image
+        // TODO enlarge image on click
         <Cartao className={styles.cardBody} bodyStyle={{padding: '0', display: 'flex'}}>
             {/* // TODO fix font. why it isnt roboto like the figma is? */}
             <Col style={{float: 'left', padding: '0'}}>

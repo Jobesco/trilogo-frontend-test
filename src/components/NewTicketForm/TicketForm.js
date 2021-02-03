@@ -1,8 +1,8 @@
 import { Form, Input, Button, Select, Upload, notification } from 'antd';
 import styles from './TicketForm.module.css'
 import './TicketForm.css'
-import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
-import { useSelector, useDispatch } from 'react-redux'
+import { InboxOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux'
 import { create } from '../../features/crud/crudSlice';
 import { change } from '../../features/generalSlice';
 
@@ -14,12 +14,12 @@ const layout = {
     span: 24,
   },
 };
-const tailLayout = {
-  wrapperCol: {
-    // offset: 8,
-    // span: 16,
-  },
-};
+// const tailLayout = {
+//   wrapperCol: {
+//     // offset: 8,
+//     // span: 16,
+//   },
+// };
 
 const { Option } = Select;
 
@@ -29,9 +29,9 @@ function TicketForm(props) {
 
     const openNotificationWithIcon = type => {
         notification[type]({
-          message: type == 'success' ? 'Sucesso!' : 'Erro!',
+          message: type === 'success' ? 'Sucesso!' : 'Erro!',
           description:
-            type == 'success' ? 'Ocorrência enviada com sucesso!' : 'Por favor, tente novamente mais tarde. :(',
+            type === 'success' ? 'Ocorrência enviada com sucesso!' : 'Por favor, tente novamente mais tarde. :(',
         });
       };
 
@@ -57,16 +57,9 @@ function TicketForm(props) {
         return e && e.fileList;
     };
 
-    const giveID = (db) => {
-        let id = db.length
-
-        // ? runs array checking if it's unique
-        // ! can be optimized with a server that hashes automatically
-        while(db.some((item, index) => index === id)) {
-            id += 1
-        }
-
-        return id
+    const manualRequest = (e) => {
+        console.log('this is a test')
+        console.log(e)
     }
 
     return (
@@ -132,7 +125,7 @@ function TicketForm(props) {
             name="imagem"
             valuePropName="fileList" getValueFromEvent={normFile}
             >
-                <Upload.Dragger name="files" action="/upload.do">
+                <Upload.Dragger accept="image/*" customRequest={manualRequest}>
                     <p className="ant-upload-drag-icon" style={{marginBottom: '0px'}}>
                     <InboxOutlined style={{color: '#4C12A1', marginBottom: '0px'}} />
                     </p>

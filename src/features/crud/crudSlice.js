@@ -12,7 +12,7 @@ export const crudSlice = createSlice({
     update: (state,action) => {
       console.log(state,'state')
       return state.map((item) => {
-        if(item.id == action.payload.id){ // * change in this one
+        if(item.id === action.payload.id){ // * change in this one
           console.log(action.payload,'payload')
           console.log(item,'item')
           return action.payload
@@ -20,7 +20,7 @@ export const crudSlice = createSlice({
       })
     },
     deleteCRUD: (state,action) => {
-      state = state.filter((item) => item.id != action.payload.id)
+      return state.filter((item) => item.id !== action.payload.id)
     },
   }
 })

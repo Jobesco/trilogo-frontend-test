@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getCRUD } from './features/crud/crudSlice';
 // import store from './app/store';
 import { getModalState } from './features/generalSlice'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 
 const { Header, Content } = Layout;
 const { Text } = Typography;
@@ -23,8 +25,10 @@ function App() {
 
   useEffect(() => {
     console.log(db,'db change')
-    setRealDB(db.map((item) => {
-      return <Card type={item.tipo} number={item.num} description={item.desc} author={item.resp} id={item.id} num={item.num}></Card>
+    setRealDB(db.map((item, index) => {
+      return (
+        <Card type={item.tipo} number={item.num} description={item.desc} author={item.resp} id={item.id} num={item.num} ></Card>
+      )
     }))
     // store.subscribe(() => {
     //   // if(realDB.length != store.getState().crud.length)
@@ -54,7 +58,12 @@ function App() {
     setVisibleModal(false);
   };
 
+  const onDragEnd = result => {
+    //TODO escrever
+  };
+
   return (
+    // TODO modal confirmando a mudança de coluna
     <Layout className="layout" style={{background: '#E5E5E5'}}>
       <Header style={{backgroundColor: '#FFFFFF', height: '80px', padding: '0 60px'}}>
         <Row justify="space-between" align="middle" style={{height: '100%'}}>
@@ -87,7 +96,9 @@ function App() {
         {/* // TODO break into components for added reusability */}
         {/* // TODO typography */}
           <Row gutter={20}>
-            <Col span={6} style={{height: '608px'}}>
+    
+            <Col span={6}
+              style={{height: '608px'}}>
               <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
                 <div style={{background: '#E9B4B7', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Abertos</div>
 
@@ -95,21 +106,21 @@ function App() {
                 <Col align="middle" style={{padding: '10px 0 0 0'}}>
                   {realDB}
                 </Col>
-                
-              </div>
-              
-            </Col>
-            
-            <Col span={6}>
-              <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
-                <div style={{background: '#F4D8CA', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Executados</div>
+
               </div>
             </Col>
 
             <Col span={6}>
               <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
+                <div style={{background: '#F4D8CA', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Executados</div>
+              </div>
+            </Col>
+                  
+            <Col span={6}>
+              <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
                 <div style={{background: '#D3F0C5', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Vistoriados</div>
               </div>
+              
             </Col>
 
             <Col span={6}>
