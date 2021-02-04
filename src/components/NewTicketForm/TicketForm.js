@@ -4,8 +4,7 @@ import './TicketForm.css'
 import { InboxOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux'
 import { create, change } from '../../features/crud/crudSlice';
-// import { change } from '../../features/crudSlice';
-
+import { useState } from 'react'
 const layout = {
   labelCol: {
     span: 24,
@@ -26,6 +25,7 @@ const { Option } = Select;
 function TicketForm(props) {
     const dispatch = useDispatch()
     const [form] = Form.useForm()
+    const [fileList2, setFileList] = useState([])
 
     const openNotificationWithIcon = type => {
         notification[type]({
@@ -36,13 +36,39 @@ function TicketForm(props) {
       };
 
     const onFinish = (values) => {
-        values.num = 6523
-        values.estado = 'aberto'
-        dispatch(create(values))
-        dispatch(change())
-        form.resetFields();
-        openNotificationWithIcon('success')
-        console.log('created!')
+        if(values.imagem){
+            const reader = new FileReader()
+            reader.readAsDataURL(values.imagem)
+            reader.onload = function() {
+                // console.log(reader.result);
+                values.imagem = reader.result
+                values.num = 6523
+                values.estado = 'aberto'
+                dispatch(create(values))
+                dispatch(change())
+                form.resetFields();
+                setFileList([])
+                openNotificationWithIcon('success')
+                console.log('created!') 
+            };
+            
+            reader.onerror = function() {
+                console.log(reader.error);
+                values.imagem = undefined
+            };    
+        }else{
+            values.num = 6523
+            values.estado = 'aberto'
+            dispatch(create(values))
+            dispatch(change())
+            form.resetFields();
+            setFileList([])
+            openNotificationWithIcon('success')
+            console.log('created!')   
+        }
+        
+        console.log(values,'values')
+        
     };
     
     const onFinishFailed = () => {
@@ -52,15 +78,37 @@ function TicketForm(props) {
     const normFile = (e) => {
         console.log('Upload event:', e);
         if (Array.isArray(e)) {
-            return e;
+            console.log('isarray')
+            return e.slice(-1)[0].originFileObj;
         }
-        return e && e.fileList;
+        if (e.fileList.length !== 0) return e && e.fileList.slice(-1)[0].originFileObj;
+        else return e
     };
 
-    const manualRequest = (e) => {
-        console.log('this is a test')
-        console.log(e)
+    const manualRequest = ({e, onSuccess}) => {
+        // console.log('this is a test')
+        // console.log(e)
+        onSuccess('ok')
     }
+
+    const handleChange = info => {
+        let fileList = [...info.fileList];
+        
+        // 1. Limit the number of uploaded files
+        // Only to show one recent uploaded file, and old ones will be replaced by the new
+        fileList = fileList.slice(-1);
+
+        // 2. Read from response and show file link
+        fileList = fileList.map(file => {
+          if (file.response) {
+            // Component will show file.url as link
+            file.url = file.response.url;
+          }
+          return file;
+        });
+        
+        setFileList(fileList)
+      };
 
     return (
         <Form
@@ -123,9 +171,9 @@ function TicketForm(props) {
             <Form.Item
             label="Imagem"
             name="imagem"
-            valuePropName="fileList" getValueFromEvent={normFile}
+            valuePropName="fileList2" getValueFromEvent={normFile}
             >
-                <Upload.Dragger accept="image/*" customRequest={manualRequest}>
+                <Upload.Dragger accept="image/*" customRequest={manualRequest} onChange={handleChange} fileList={fileList2}>
                     <p className="ant-upload-drag-icon" style={{marginBottom: '0px'}}>
                     <InboxOutlined style={{color: '#4C12A1', marginBottom: '0px'}} />
                     </p>

@@ -35,3 +35,9 @@
     letter-spacing: 0.10000000149011612px;
     text-align: left;
 }
+
+.imgDiv {
+    height: 104px;
+    width: 227px;
+    margin-right: 16px !important;
+}

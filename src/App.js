@@ -33,7 +33,7 @@ function App() {
     setAbertos(db.map((item) => {
       if(item.data.estado === 'aberto'){
         return (
-          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} ></Card>
+          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} propimg={item.data.imagem} ></Card>
         )  
       }
     }))
@@ -42,7 +42,7 @@ function App() {
     setExecutados(db.map((item) => {
       if(item.data.estado === 'executado'){
         return (
-          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} ></Card>
+          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} propimg={item.data.imagem} ></Card>
         )  
       }
     }))
@@ -51,7 +51,7 @@ function App() {
     setVistoriados(db.map((item) => {
       if(item.data.estado === 'vistoriado'){
         return (
-          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} ></Card>
+          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} propimg={item.data.imagem} ></Card>
         )  
       }
     }))
@@ -60,7 +60,7 @@ function App() {
     setArquivados(db.map((item) => {
       if(item.data.estado === 'arquivado'){
         return (
-          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} ></Card>
+          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} propimg={item.data.imagem} ></Card>
         )  
       }
     }))
@@ -131,8 +131,7 @@ function App() {
               <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
                 <div style={{background: '#E9B4B7', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Abertos</div>
 
-                {/* // TODO change to a lazy list */}
-                <Col align="middle" style={{padding: '10px 0 0 0'}}>
+                <Col align="middle" className={styles.overflowCol}>
                   {dbAbertos}
                 </Col>
 
@@ -143,7 +142,7 @@ function App() {
               <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
                 <div style={{background: '#F4D8CA', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Executados</div>
 
-                <Col align="middle" style={{padding: '10px 0 0 0'}}>
+                <Col align="middle" className={styles.overflowCol}>
                   {dbExecutados}
                 </Col>
               </div>
@@ -153,7 +152,7 @@ function App() {
               <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
                 <div style={{background: '#D3F0C5', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Vistoriados</div>
 
-                <Col align="middle" style={{padding: '10px 0 0 0'}}>
+                <Col align="middle" className={styles.overflowCol}>
                   {dbVistoriados}
                 </Col>
               </div>
@@ -164,7 +163,7 @@ function App() {
               <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
                 <div style={{background: '#EFEDED', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Arquivados</div>
 
-                <Col align="middle" style={{padding: '10px 0 0 0'}}>
+                <Col align="middle" className={styles.overflowCol}>
                   {dbArquivados}
                 </Col>
               </div>

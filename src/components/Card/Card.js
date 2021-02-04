@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
-import { Card as Cartao, Col, Button, Menu, Dropdown, message, Modal } from 'antd';
+import { Card as Cartao, Col, Image, Menu, Dropdown, message, Modal } from 'antd';
 import {SettingFilled} from '@ant-design/icons';
 import styles from './Card.module.css'
 import UpdateTicketForm from '../UpdateTicketForm/UpdateTicketForm'
@@ -12,7 +12,9 @@ function Propimg(props){
     // TODO set image
     if(props.propimg){
         return (
-            <div>oh yes</div>
+            <div>
+                <Image src={props.propimg} height={104} width={213} />
+            </div>
         );
     }else{
         return (
@@ -81,7 +83,7 @@ function Card(props) {
             <Col style={{float: 'left', padding: '0'}}>
                 {propimg}
 
-                <div style={{display: 'flex', marginBottom: '12px'}}>
+                <div style={{display: 'flex', marginBottom: '12px', marginTop: '10px'}}>
                     <div className={styles.cardType}>{props.tipo}</div>
                 </div>
 
