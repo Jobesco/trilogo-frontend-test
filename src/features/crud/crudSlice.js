@@ -32,10 +32,17 @@ export const crudSlice = createSlice({
     change: state => {
       state.turnOffModal = !state.turnOffModal
     },
+    changeState: (state,action) => {
+      // ? payload.estado: e.key, payload.id: props.id
+
+      let temp = JSON.parse(localStorage.getItem(action.payload.id))
+      temp.estado = action.payload.estado
+      localStorage.setItem(action.payload.id,JSON.stringify(temp))
+    }
   }
 })
 
-export const { create, update, deleteCRUD, change } = crudSlice.actions
+export const { create, update, deleteCRUD, change, changeState } = crudSlice.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

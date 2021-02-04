@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
 import { Layout, Button, Row, Col, Typography, Divider, Modal } from 'antd';
@@ -8,8 +8,8 @@ import TicketForm from './components/NewTicketForm/TicketForm.js'
 import styles from './components/NewTicketForm/TicketForm.module.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCRUD, getModalState } from './features/crud/crudSlice';
-// import store from './app/store';
-// import { getModalState } from './features/crudSlice'
+// import { DndProvider, useDrag, useDrop } from "react-dnd";
+// import {HTML5Backend} from "react-dnd-html5-backend";
 
 
 const { Header, Content } = Layout;
@@ -18,21 +18,52 @@ const { Text } = Typography;
 function App() {
   const [visibleModal, setVisibleModal] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [realDB, setRealDB] = useState([]);
+  const [dbAbertos, setAbertos] = useState([]);
+  const [dbExecutados, setExecutados] = useState([]);
+  const [dbVistoriados, setVistoriados] = useState([]);
+  const [dbArquivados, setArquivados] = useState([]);
   const db = useSelector(getCRUD)
   const modalState = useSelector(getModalState)
+  const ref = useRef(null); // Initialize the reference
+
 
   useEffect(() => {
     console.log(db,'db change')
-    setRealDB(db.map((item) => {
-      return (
-        <Card tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} num={item.data.num} ></Card>
-      )
+    // ? configura o array de chamados abertos
+    setAbertos(db.map((item) => {
+      if(item.data.estado === 'aberto'){
+        return (
+          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} ></Card>
+        )  
+      }
     }))
-    // store.subscribe(() => {
-    //   // if(realDB.length != store.getState().crud.length)
-    //   console.log(db,'db changed?')
-    // })
+
+    // ? configura o array de chamados executados
+    setExecutados(db.map((item) => {
+      if(item.data.estado === 'executado'){
+        return (
+          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} ></Card>
+        )  
+      }
+    }))
+
+    // ? configura o array de chamados vistoriados
+    setVistoriados(db.map((item) => {
+      if(item.data.estado === 'vistoriado'){
+        return (
+          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} ></Card>
+        )  
+      }
+    }))
+
+    // ? configura o array de chamados arquivados
+    setArquivados(db.map((item) => {
+      if(item.data.estado === 'arquivado'){
+        return (
+          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} ></Card>
+        )  
+      }
+    }))
   }, [db])
 
   useEffect(() => {
@@ -94,16 +125,15 @@ function App() {
         {/* // * 4 columns */}
         {/* // TODO break into components for added reusability */}
         {/* // TODO typography */}
-          <Row gutter={20}>
+          <Row gutter={20} style={{height: '608px'}}>
     
-            <Col span={6}
-              style={{height: '608px'}}>
+            <Col span={6}>
               <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
                 <div style={{background: '#E9B4B7', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Abertos</div>
 
                 {/* // TODO change to a lazy list */}
                 <Col align="middle" style={{padding: '10px 0 0 0'}}>
-                  {realDB}
+                  {dbAbertos}
                 </Col>
 
               </div>
@@ -112,12 +142,20 @@ function App() {
             <Col span={6}>
               <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
                 <div style={{background: '#F4D8CA', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Executados</div>
+
+                <Col align="middle" style={{padding: '10px 0 0 0'}}>
+                  {dbExecutados}
+                </Col>
               </div>
             </Col>
                   
             <Col span={6}>
               <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
                 <div style={{background: '#D3F0C5', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Vistoriados</div>
+
+                <Col align="middle" style={{padding: '10px 0 0 0'}}>
+                  {dbVistoriados}
+                </Col>
               </div>
               
             </Col>
@@ -125,6 +163,10 @@ function App() {
             <Col span={6}>
               <div style={{background: '#FFFFFF', height: '100%', borderRadius: '8px'}}>
                 <div style={{background: '#EFEDED', borderRadius: '8px 8px 0px 0px', padding: '10px 0 10px 10px', height: '40px'}}>Arquivados</div>
+
+                <Col align="middle" style={{padding: '10px 0 0 0'}}>
+                  {dbArquivados}
+                </Col>
               </div>
             </Col>
           </Row>

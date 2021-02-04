@@ -5,7 +5,7 @@ import {SettingFilled} from '@ant-design/icons';
 import styles from './Card.module.css'
 import UpdateTicketForm from '../UpdateTicketForm/UpdateTicketForm'
 // import { getModalState } from '../../features/generalSlice'
-import { deleteCRUD, getModalState } from '../../features/crud/crudSlice'
+import { deleteCRUD, getModalState, changeState } from '../../features/crud/crudSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
 function Propimg(props){
@@ -19,7 +19,7 @@ function Propimg(props){
             <div style={{display: 'none'}} />
         );
     }
-}
+}  
 
 // * PROPS:
 // ? type: procedure, etc ("Bem", "Predial" e "Procedimento")
@@ -37,9 +37,12 @@ function Card(props) {
     const menuCall = (e) => {
         if(e.key === 'edit'){
             setVisibleModal(true)
-        }else{
+        }else if(e.key === 'delete'){
             dispatch(deleteCRUD(props.id))
             message.info('Deletado com sucesso!')
+        }else{
+            dispatch(changeState({estado: e.key, id: props.id}))
+            message.info('Alterado com sucesso!')
         }
     }
 
@@ -53,10 +56,18 @@ function Card(props) {
         setVisibleModal(false);
     }, [modalState])
 
+    const { SubMenu } = Menu
+
     const menu = (
         <Menu onClick={menuCall}>
-          <Menu.Item key="edit">Editar</Menu.Item>
-          <Menu.Item key="delete">Excluir</Menu.Item>
+            <Menu.Item key="edit">Editar</Menu.Item>
+            <Menu.Item key="delete">Excluir</Menu.Item>
+            <SubMenu title="Alterar Estado">
+                <Menu.Item key="aberto">Abertos</Menu.Item>
+                <Menu.Item key="executado">Executados</Menu.Item>
+                <Menu.Item key="vistoriado">Vistoriados</Menu.Item>
+                <Menu.Item key="arquivado">Arquivados</Menu.Item>
+            </SubMenu>
         </Menu>
     );
 
