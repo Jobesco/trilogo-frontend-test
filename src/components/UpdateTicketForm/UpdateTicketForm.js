@@ -1,9 +1,9 @@
 import { Form, Input, Button, Select, Upload, notification } from 'antd';
 import styles from './UpdateTicketForm.module.css'
-import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux'
-import { update } from '../../features/crud/crudSlice';
-import { change } from '../../features/generalSlice';
+import { update, change } from '../../features/crud/crudSlice';
+// import { change } from '../../features/generalSlice';
 
 const layout = {
   labelCol: {
@@ -11,12 +11,6 @@ const layout = {
   },
   wrapperCol: {
     span: 24,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    // offset: 8,
-    // span: 16,
   },
 };
 
@@ -27,18 +21,17 @@ function UpdateTicketForm(props) {
 
     const openNotificationWithIcon = type => {
       notification[type]({
-        message: type == 'success' ? 'Sucesso!' : 'Erro!',
+        message: type === 'success' ? 'Sucesso!' : 'Erro!',
         description:
-          type == 'success' ? 'Ocorrência alterada com sucesso!' : 'Por favor, tente novamente mais tarde. :(',
+          type === 'success' ? 'Ocorrência alterada com sucesso!' : 'Por favor, tente novamente mais tarde. :(',
       });
     };
 
     const onFinish = (values) => {
-      values.id = props.id
       values.num = props.num
-      dispatch(update(values))
+      dispatch(update({ id: props.id , data: values}))
       // console.log(values, 'valores atualizando')
-      console.log('terminei')
+      // console.log('terminei')
       openNotificationWithIcon('success')
       dispatch(change())
     };

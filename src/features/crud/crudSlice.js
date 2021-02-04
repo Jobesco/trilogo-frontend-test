@@ -2,30 +2,40 @@ import { createSlice, nanoid } from '@reduxjs/toolkit'
 
 export const crudSlice = createSlice({
   name: 'crud',
-  initialState: [],
+  initialState: {
+    turnOffModal: true,
+  },
   reducers: {
     // TODO async functions
+    // * entries have 'DATA:' at the beggining of the key
     create: (state, action) => {
-      action.payload.id = nanoid()
-      state.push(action.payload)
+      localStorage.setItem('DATA:'+nanoid(),JSON.stringify(action.payload))
+      // state.db.push(action.payload)
     },
     update: (state,action) => {
-      console.log(state,'state')
-      return state.map((item) => {
-        if(item.id === action.payload.id){ // * change in this one
-          console.log(action.payload,'payload')
-          console.log(item,'item')
-          return action.payload
-        }else return item
-      })
+
+      console.log(action.payload,'AHAHAHA')
+      localStorage.setItem(action.payload.id,JSON.stringify(action.payload.data))
+
+      // console.log(state,'state')
+      // return state.db.map((item) => {
+      //   if(item.id === action.payload.id){ // * change in this one
+      //     console.log(action.payload,'payload')
+      //     console.log(item,'item')
+      //     return action.payload
+      //   }else return item
+      // })
     },
     deleteCRUD: (state,action) => {
-      return state.filter((item) => item.id !== action.payload.id)
+      localStorage.removeItem(action.payload)
+    },
+    change: state => {
+      state.turnOffModal = !state.turnOffModal
     },
   }
 })
 
-export const { create, update, deleteCRUD } = crudSlice.actions
+export const { create, update, deleteCRUD, change } = crudSlice.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -40,6 +50,18 @@ export const { create, update, deleteCRUD } = crudSlice.actions
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
-export const getCRUD = state => state.crud;
+// export const getCRUD = state => {return state.crud.db};
+export const getCRUD = () => {
+  let arr = []
+  for (let x in localStorage) {
+    if(x.slice(0,5) === 'DATA:'){
+      // localStorage.clear() 
+      arr.push({ data: JSON.parse(localStorage.getItem(x)), id: x })
+    }
+  }
+  return arr
+};
+export const getModalState = state => state.crud.turnOffModal;
+
 
 export default crudSlice.reducer

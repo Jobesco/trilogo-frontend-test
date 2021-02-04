@@ -3,8 +3,8 @@ import styles from './TicketForm.module.css'
 import './TicketForm.css'
 import { InboxOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux'
-import { create } from '../../features/crud/crudSlice';
-import { change } from '../../features/generalSlice';
+import { create, change } from '../../features/crud/crudSlice';
+// import { change } from '../../features/crudSlice';
 
 const layout = {
   labelCol: {
@@ -36,8 +36,8 @@ function TicketForm(props) {
       };
 
     const onFinish = (values) => {
-        // values.id = giveID(db)
         values.num = 6523
+        values.estado = 'aberto'
         dispatch(create(values))
         dispatch(change())
         form.resetFields();

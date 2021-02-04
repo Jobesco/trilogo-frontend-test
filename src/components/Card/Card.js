@@ -4,8 +4,8 @@ import { Card as Cartao, Col, Button, Menu, Dropdown, message, Modal } from 'ant
 import {SettingFilled} from '@ant-design/icons';
 import styles from './Card.module.css'
 import UpdateTicketForm from '../UpdateTicketForm/UpdateTicketForm'
-import { getModalState } from '../../features/generalSlice'
-import { deleteCRUD } from '../../features/crud/crudSlice'
+// import { getModalState } from '../../features/generalSlice'
+import { deleteCRUD, getModalState } from '../../features/crud/crudSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
 function Propimg(props){
@@ -26,6 +26,7 @@ function Propimg(props){
 // ? number: ticket number
 // ? description
 // ? author: author of the ticket
+// ! se não tem a prop image, é pq n enviou image
 function Card(props) {
     const [visibleModal, setVisibleModal] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
@@ -37,8 +38,7 @@ function Card(props) {
         if(e.key === 'edit'){
             setVisibleModal(true)
         }else{
-            console.log(props,'props!!')
-            dispatch(deleteCRUD(props))
+            dispatch(deleteCRUD(props.id))
             message.info('Deletado com sucesso!')
         }
     }
@@ -71,15 +71,15 @@ function Card(props) {
                 {propimg}
 
                 <div style={{display: 'flex', marginBottom: '12px'}}>
-                    <div className={styles.cardType}>{props.type}</div>
+                    <div className={styles.cardType}>{props.tipo}</div>
                 </div>
 
-                <div className={styles.cardNumber}>{props.number}</div>
+                <div className={styles.cardNumber}>{props.num}</div>
 
-                <div style={{color: '#666666', minHeight: '44px', textAlign: 'left'}}>{props.description}</div>
+                <div style={{color: '#666666', minHeight: '44px', textAlign: 'left'}}>{props.desc}</div>
 
                 {/* // TODO same line for text and button */}
-                <div style={{float: 'left', color: '#1F1F49'}}>{props.author}</div>    
+                <div style={{float: 'left', color: '#1F1F49'}}>{props.resp}</div>    
             </Col>
             
             {/* <Button type="text" icon={<SettingFilled />} style={{alignSelf: 'flex-end', margin: '0 0 0 auto', color: '#8D89A5'}} size='large' /> */}
@@ -96,7 +96,7 @@ function Card(props) {
                 className={styles.modal}
                 footer={null}
             >
-                <UpdateTicketForm style={{height: '528px'}} desc={props.description} tipo={props.type} resp={props.author} imagem={propimg} id={props.id} num={props.num} />
+                <UpdateTicketForm style={{height: '528px'}} desc={props.desc} tipo={props.tipo} resp={props.resp} imagem={propimg} id={props.id} num={props.num} />
             </Modal>
         </Cartao>
     );

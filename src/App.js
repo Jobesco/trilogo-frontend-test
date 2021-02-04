@@ -7,10 +7,9 @@ import Card from './components/Card/Card.js'
 import TicketForm from './components/NewTicketForm/TicketForm.js'
 import styles from './components/NewTicketForm/TicketForm.module.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { getCRUD } from './features/crud/crudSlice';
+import { getCRUD, getModalState } from './features/crud/crudSlice';
 // import store from './app/store';
-import { getModalState } from './features/generalSlice'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+// import { getModalState } from './features/crudSlice'
 
 
 const { Header, Content } = Layout;
@@ -25,9 +24,9 @@ function App() {
 
   useEffect(() => {
     console.log(db,'db change')
-    setRealDB(db.map((item, index) => {
+    setRealDB(db.map((item) => {
       return (
-        <Card type={item.tipo} number={item.num} description={item.desc} author={item.resp} id={item.id} num={item.num} ></Card>
+        <Card tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} num={item.data.num} ></Card>
       )
     }))
     // store.subscribe(() => {
