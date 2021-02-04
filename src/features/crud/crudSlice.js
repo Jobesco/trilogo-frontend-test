@@ -13,18 +13,8 @@ export const crudSlice = createSlice({
       // state.db.push(action.payload)
     },
     update: (state,action) => {
-
-      console.log(action.payload,'AHAHAHA')
+      console.log(action.payload,'on crudSlice')
       localStorage.setItem(action.payload.id,JSON.stringify(action.payload.data))
-
-      // console.log(state,'state')
-      // return state.db.map((item) => {
-      //   if(item.id === action.payload.id){ // * change in this one
-      //     console.log(action.payload,'payload')
-      //     console.log(item,'item')
-      //     return action.payload
-      //   }else return item
-      // })
     },
     deleteCRUD: (state,action) => {
       localStorage.removeItem(action.payload)

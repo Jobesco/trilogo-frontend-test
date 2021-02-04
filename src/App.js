@@ -33,7 +33,7 @@ function App() {
     setAbertos(db.map((item) => {
       if(item.data.estado === 'aberto'){
         return (
-          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} propimg={item.data.imagem} ></Card>
+          <Card ref={ref} tipo={item.data.tipo} num={item.data.num} desc={item.data.desc} resp={item.data.resp} id={item.id} propimg={item.data.imagem} estado={item.data.estado} ></Card>
         )  
       }
     }))

@@ -109,7 +109,7 @@ function Card(props) {
                 className={styles.modal}
                 footer={null}
             >
-                <UpdateTicketForm style={{height: '528px'}} desc={props.desc} tipo={props.tipo} resp={props.resp} imagem={propimg} id={props.id} num={props.num} />
+                <UpdateTicketForm style={{height: '528px'}} desc={props.desc} tipo={props.tipo} resp={props.resp} imagem={props.propimg} id={props.id} num={props.num} estado={props.estado} />
             </Modal>
         </Cartao>
     );
